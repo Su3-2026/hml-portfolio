@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黄梦琳 — 个人主页</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --curtain-red: #8b1a1a;
+    --stage-gold: #c9a84c;
+    --deep-black: #1a1a1a;
+    --warm-cream: #faf5ee;
+    --parchment: #f7efe0;
+    --ink: #1c1c1c;
+    --muted: #5c5c5c;
+    --soft-muted: #8a8a8a;
+    --border: #e0d8cc;
+    --spotlight: rgba(201,168,76,0.15);
+    --dark-surface: #22201e;
+    --sans: 'Noto Sans SC', -apple-system, sans-serif;
+    --serif: 'Noto Serif SC', 'Cormorant Garamond', Georgia, serif;
+    --display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--warm-cream);
+    color: var(--ink);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── STAGE CURTAIN REVEAL ── */
+  .curtain-overlay {
+    position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    display: flex; transition: transform 1.2s var(--ease-out-expo);
+  }
+  .curtain-overlay.open { transform: translateY(-100%); }
+  .curtain-overlay .curtain-left, .curtain-overlay .curtain-right {
+    flex: 1; background: var(--curtain-red);
+    background-image: repeating-linear-gradient(
+      90deg, transparent, transparent 3px,
+      rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 6px
+    );
+    position: relative;
+  }
+  .curtain-overlay .curtain-left { transform-origin: left center; }
+  .curtain-overlay .curtain-right { transform-origin: right center; }
+  .curtain-overlay .curtain-text {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-family: var(--display); font-size: 2.5rem; color: var(--stage-gold);
+    font-style: italic; white-space: nowrap; z-index: 1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    animation: curtainFade 1s ease-in-out infinite alternate;
+  }
+  @keyframes curtainFade { from { opacity: 0.6; } to { opacity: 1; } }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,245,238,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 0 3rem; border-bottom: 1px solid transparent;
+    transition: all 0.4s;
+  }
+  nav.scrolled { border-bottom-color: var(--border); }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto; display: flex;
+    align-items: center; justify-content: space-between; height: 64px;
+  }
+  nav .logo {
+    font-family: var(--display); font-weight: 700; font-size: 1.25rem;
+    color: var(--ink); text-decoration: none; font-style: italic;
+    letter-spacing: 0.03em;
+  }
+  nav .logo .gold-dot { color: var(--stage-gold); }
+  nav .links { display: flex; gap: 2.5rem; list-style: none; }
+  nav .links a {
+    text-decoration: none; color: var(--muted); font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  nav .links a:hover { color: var(--curtain-red); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 6rem 3rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero .spotlight-bg {
+    position: absolute; top: -50%; left: -20%; width: 140%; height: 200%;
+    background: radial-gradient(ellipse at 60% 45%, var(--spotlight) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero .hero-inner {
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero .hero-text .eyebrow {
+    font-family: var(--sans); font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--curtain-red); margin-bottom: 1.5rem;
+  }
+  .hero .hero-text h1 {
+    font-family: var(--display); font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 900; line-height: 1.05; letter-spacing: 0.01em;
+    font-style: italic;
+  }
+  .hero .hero-text h1 .cn {
+    display: block; font-family: var(--serif); font-size: 0.5em;
+    font-weight: 700; font-style: normal; margin-bottom: 0.2rem;
+    color: var(--ink);
+  }
+  .hero .hero-text .tagline {
+    font-family: var(--sans); font-size: 1rem; color: var(--muted);
+    margin-top: 1.5rem; line-height: 1.7; max-width: 380px;
+    border-left: 3px solid var(--curtain-red); padding-left: 1.25rem;
+  }
+  .hero .hero-visual { position: relative; display: flex; justify-content: center; }
+  .hero .photo-stage {
+    position: relative; width: 300px; height: 380px; z-index: 2;
+    border: 1px solid var(--border);
+  }
+  .hero .photo-stage img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .hero .gold-accent {
+    position: absolute; top: -24px; right: -24px; width: 200px; height: 200px;
+    background: var(--curtain-red); z-index: 1;
+  }
+  .hero .theater-quote {
+    position: absolute; bottom: -20px; left: -40px; z-index: 3;
+    font-family: var(--display); font-size: 1rem; font-style: italic;
+    color: var(--stage-gold); background: var(--warm-cream);
+    padding: 0.75rem 1.25rem; border: 1px solid var(--border);
+    max-width: 220px; line-height: 1.4;
+  }
+  .hero .theater-quote::before { content: '\201C'; font-size: 2rem; display: block; line-height: 0.5; }
+  .hero .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--soft-muted); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; animation: float 2.5s ease-in-out infinite;
+  }
+  .hero .scroll-indicator .line {
+    width: 1px; height: 36px; background: var(--border);
+  }
+  @keyframes float {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 3rem; position: relative; }
+  .section-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .section-header { margin-bottom: 4rem; display: flex; align-items: baseline; gap: 1.5rem; }
+  .section-header .num {
+    font-family: var(--display); font-size: 5.5rem; font-weight: 900; font-style: italic;
+    color: var(--curtain-red); line-height: 0.65; opacity: 0.12; flex-shrink: 0;
+  }
+  .section-header .title-col { padding-top: 1.2rem; }
+  .section-header .label {
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--curtain-red); margin-bottom: 0.5rem;
+  }
+  .section-header h2 {
+    font-family: var(--serif); font-size: 2.5rem; font-weight: 700; line-height: 1.2;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── ABOUT ── */
+  .about-spread { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .about-stat {
+    padding: 2rem; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; align-items: center;
+  }
+  .about-stat .stat-big {
+    font-family: var(--display); font-size: 3rem; font-weight: 900; font-style: italic;
+    color: var(--curtain-red); line-height: 1;
+  }
+  .about-stat .stat-info .stat-label {
+    font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft-muted);
+  }
+  .about-stat .stat-info .stat-value { font-weight: 600; font-size: 1rem; margin-top: 0.3rem; }
+
+  /* ── EDUCATION ── */
+  .edu-mag {
+    display: grid; grid-template-columns: 1fr 1.5fr; gap: 3.5rem;
+    border-top: 2px solid var(--ink); border-bottom: 1px solid var(--border);
+    padding: 3.5rem 0;
+  }
+  .edu-mag .edu-quote {
+    font-family: var(--display); font-size: 2.2rem; font-style: italic; line-height: 1.35;
+    color: var(--ink); font-weight: 600;
+  }
+  .edu-mag .edu-detail .school {
+    font-family: var(--serif); font-size: 1.8rem; font-weight: 700; letter-spacing: 0.03em;
+  }
+  .edu-mag .edu-detail .meta {
+    font-size: 0.75rem; color: var(--muted); margin: 0.4rem 0 1.5rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .edu-mag .edu-detail .point-list { list-style: none; }
+  .edu-mag .edu-detail .point-list li {
+    padding: 0.6rem 0; border-bottom: 1px dotted var(--border);
+    font-size: 0.88rem; color: var(--muted); display: flex; gap: 0.75rem;
+  }
+  .edu-mag .edu-detail .point-list li::before {
+    content: ''; width: 5px; height: 5px; background: var(--curtain-red);
+    border-radius: 50%; flex-shrink: 0; margin-top: 0.5rem;
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-list { display: flex; flex-direction: column; gap: 2rem; }
+  .exp-card {
+    background: var(--parchment); border: 1px solid var(--border);
+    padding: 2.5rem; display: grid; grid-template-columns: 200px 1fr; gap: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .exp-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--stage-gold);
+  }
+  .exp-card .exp-left .company {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 700; letter-spacing: 0.03em;
+  }
+  .exp-card .exp-left .role { font-size: 0.85rem; color: var(--muted); margin: 0.2rem 0 0.3rem; }
+  .exp-card .exp-left .dates {
+    font-size: 0.65rem; letter-spacing: 0.12em; color: var(--curtain-red);
+    text-transform: uppercase; font-weight: 600;
+  }
+  .exp-card .exp-detail { list-style: none; }
+  .exp-card .exp-detail li {
+    font-size: 0.85rem; color: var(--muted); margin-bottom: 0.4rem;
+    padding-left: 1rem; position: relative;
+  }
+  .exp-card .exp-detail li::before {
+    content: '-'; position: absolute; left: 0; color: var(--stage-gold);
+  }
+
+  /* ── PROJECT ── */
+  .project-feature {
+    background: var(--parchment); border: 1px solid var(--border); padding: 3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+  }
+  .project-feature .proj-title {
+    font-family: var(--serif); font-size: 1.3rem; font-weight: 700; letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .project-feature .proj-meta {
+    font-size: 0.65rem; letter-spacing: 0.12em; color: var(--curtain-red);
+    text-transform: uppercase; font-weight: 600; margin-bottom: 1rem;
+  }
+  .project-feature .proj-body { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+
+  /* ── SKILLS ── */
+  .skills-rack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .skill-mini {
+    text-align: center; padding: 2.5rem 1.25rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s;
+  }
+  .skill-mini:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  }
+  .skill-mini .s-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+  .skill-mini .s-name {
+    font-family: var(--serif); font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem;
+    color: #fff;
+  }
+  .skill-mini .s-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center; }
+  .skill-mini .s-tag {
+    font-size: 0.68rem; padding: 0.25rem 0.7rem;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 2px;
+    color: #aaa; letter-spacing: 0.05em;
+  }
+
+  /* ── MUSICAL THEATER SECTION ── */
+  .theater-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .theater-card {
+    padding: 3rem 2.5rem; border: 1px solid var(--border);
+    margin: -1px 0 0 -1px; position: relative; overflow: hidden;
+    background: var(--warm-cream);
+    transition: background 0.4s;
+  }
+  .theater-card:hover { background: var(--parchment); }
+  .theater-card .tc-icon {
+    font-size: 3rem; margin-bottom: 1rem; position: relative; z-index: 1;
+  }
+  .theater-card .tc-title {
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem;
+    position: relative; z-index: 1;
+  }
+  .theater-card .tc-quote {
+    font-family: var(--display); font-size: 1.1rem; font-style: italic;
+    color: var(--stage-gold); margin-bottom: 0.5rem; position: relative; z-index: 1;
+  }
+  .theater-card .tc-desc {
+    font-size: 0.85rem; color: var(--muted); position: relative; z-index: 1; line-height: 1.7;
+  }
+  .theater-card .tc-bg {
+    position: absolute; right: -20px; bottom: -20px; font-size: 8rem;
+    line-height: 1; color: rgba(0,0,0,0.02); z-index: 0;
+  }
+
+  /* ── MUSICAL TIMELINE ── */
+  .showcase-marquee {
+    padding: 2rem 0; position: relative; overflow: hidden;
+    white-space: nowrap; margin: 2rem 0;
+  }
+  .showcase-marquee .marquee-track {
+    display: inline-flex; gap: 2rem;
+    animation: marquee 30s linear infinite;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .showcase-marquee .show-chip {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--serif); font-size: 1.1rem; font-weight: 600;
+    color: var(--muted); padding: 0.6rem 1.5rem;
+    border: 1px solid var(--border); background: var(--warm-cream);
+  }
+  .showcase-marquee .show-chip .star { color: var(--stage-gold); }
+  .showcase-marquee .show-chip.active { color: var(--curtain-red); border-color: var(--curtain-red); }
+
+  /* ── STRENGTHS ── */
+  .strength-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .strength-article {
+    padding: 2.5rem; position: relative;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .strength-article .sa-icon {
+    font-size: 1.8rem; margin-bottom: 1rem; opacity: 0.7;
+  }
+  .strength-article .sa-title {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .strength-article .sa-body { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+
+  /* ── CONTACT ── */
+  .contact-finale { background: var(--deep-black); color: #bbb; }
+  .contact-finale .section-header .num { color: #fff; opacity: 0.06; }
+  .contact-finale .section-header h2 { color: #fff; }
+  .cta-spread {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+  .cta-spread .cta-quote {
+    font-family: var(--display); font-size: 2.2rem; font-style: italic; color: #fff;
+    line-height: 1.4;
+  }
+  .cta-spread .cta-quote .gold { color: var(--stage-gold); }
+  .cta-spread .cta-links { display: flex; flex-direction: column; gap: 1.25rem; }
+  .cta-spread .cta-links a {
+    color: #999; text-decoration: none; font-size: 1rem;
+    padding: 1.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: color 0.3s, border-color 0.3s;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .cta-spread .cta-links a:hover { color: #fff; border-bottom-color: var(--stage-gold); }
+  .cta-spread .cta-links a .arrow {
+    transition: transform 0.3s; color: var(--stage-gold);
+  }
+  .cta-spread .cta-links a:hover .arrow { transform: translateX(6px); }
+
+  footer {
+    text-align: center; padding: 2rem; font-size: 0.7rem; color: var(--soft-muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--deep-black);
+  }
+
+  /* ── DARK ALT ── */
+  .dark-zone { background: var(--deep-black); }
+  .dark-zone .section-header .num { color: #fff; opacity: 0.06; }
+  .dark-zone .section-header h2 { color: #fff; }
+  .dark-zone .section-header .label { color: var(--stage-gold); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero .hero-inner { grid-template-columns: 1fr; }
+    .hero .photo-stage { width: 220px; height: 280px; }
+    .hero .gold-accent { width: 120px; height: 120px; top:-12px; right:-12px; }
+    .hero .theater-quote { left: 0; bottom: -30px; font-size: 0.85rem; }
+    .about-spread { grid-template-columns: 1fr; }
+    .edu-mag { grid-template-columns: 1fr; gap: 1.5rem; }
+    .exp-card { grid-template-columns: 1fr; gap: 1rem; }
+    .project-feature { grid-template-columns: 1fr; }
+    .skills-rack { grid-template-columns: 1fr 1fr; }
+    .theater-grid { grid-template-columns: 1fr; }
+    .strength-duo { grid-template-columns: 1fr; }
+    .cta-spread { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 5rem 1.5rem 3rem; }
+    nav { padding: 0 1.5rem; }
+  }
+  @media (max-width: 500px) {
+    nav .links { display: none; }
+    .section-header h2 { font-size: 1.7rem; }
+    .skills-rack { grid-template-columns: 1fr; }
+  }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal {
+    opacity: 0; transform: translateY(36px);
+    transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── SPARKLE CURSOR ── */
+  .sparkle {
+    position: fixed; pointer-events: none; z-index: 999;
+    width: 8px; height: 8px; background: var(--stage-gold);
+    border-radius: 50%; animation: sparkleDie 0.7s ease-out forwards;
+  }
+  @keyframes sparkleDie {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0) translateY(-30px); }
+  }
+
+  ::selection { background: var(--curtain-red); color: #fff; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--warm-cream); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+</style>
+</head>
+<body>
+
+<!-- ── CURTAIN OVERLAY ── -->
+<div class="curtain-overlay" id="curtain">
+  <div class="curtain-left"></div>
+  <div class="curtain-text">The Show Is About To Begin</div>
+  <div class="curtain-right"></div>
+</div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <div class="inner">
+    <a href="#" class="logo">HML<span class="gold-dot">.</span></a>
+    <ul class="links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#experience">Work</a></li>
+      <li><a href="#theater">Passion</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="spotlight-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-text reveal">
+      <div class="eyebrow">Portfolio &middot; Act I</div>
+      <h1><span class="cn">黄梦琳</span>Huang<br>Menglin</h1>
+      <p class="tagline">江西财经大学法务会计在读。<br>在法律条文的严谨与财会数字的逻辑之间，<br>寻找属于自己的职业乐章。</p>
+    </div>
+    <div class="hero-visual reveal reveal-delay-1">
+      <div class="gold-accent"></div>
+      <div class="photo-stage">
+        <img src="images/0689f9e32564f7812723115c45205adb.jpg" alt="黄梦琳" onerror="this.style.opacity='0'">
+      </div>
+      <div class="theater-quote">To love another person is to see the face of God.<br><span style="font-size:0.65em;font-style:normal;color:var(--muted);">— Les Miserables</span></div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">01</div>
+      <div class="title-col">
+        <div class="label">About</div>
+        <h2>关于我</h2>
+      </div>
+    </div>
+    <div class="about-spread">
+      <div class="about-stat reveal">
+        <div class="stat-big">21</div>
+        <div class="stat-info">
+          <div class="stat-label">年龄 / Age</div>
+          <div class="stat-value">2004 年 12 月出生</div>
+        </div>
+      </div>
+      <div class="about-stat reveal reveal-delay-1">
+        <span class="stat-big" style="font-size:1.8rem;font-style:normal;font-family:var(--serif);">JUFE</span>
+        <div class="stat-info">
+          <div class="stat-label">学校 / University</div>
+          <div class="stat-value">江西财经大学</div>
+        </div>
+      </div>
+      <div class="about-stat reveal reveal-delay-2">
+        <span class="stat-big" style="font-size:2.3rem;">⚖️</span>
+        <div class="stat-info">
+          <div class="stat-label">专业 / Major</div>
+          <div class="stat-value">法学（法务会计）&middot; 本科在读</div>
+        </div>
+      </div>
+      <div class="about-stat reveal reveal-delay-3">
+        <div class="stat-big">...</div>
+        <div class="stat-info">
+          <div class="stat-label">期待岗位 / Roles</div>
+          <div class="stat-value">律师助理 &middot; 法务会计 &middot; 合规专员</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education" style="background:var(--parchment);">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">02</div>
+      <div class="title-col">
+        <div class="label">Education</div>
+        <h2>教育背景</h2>
+      </div>
+    </div>
+    <div class="edu-mag reveal">
+      <div class="edu-quote">
+        "法律与会计的交叉学科，如同复调音乐——两种旋律各自独立，却又在深处共鸣。"
+      </div>
+      <div class="edu-detail">
+        <div class="school">江西财经大学</div>
+        <div class="meta">Bachelor of Law (Forensic Accounting) &middot; 2023 — Present</div>
+        <ul class="point-list">
+          <li>主修法务会计、民法、经济法、财务会计等核心课程</li>
+          <li>搭建法律与财务交叉的专业知识体系</li>
+          <li>通过大学英语四六级考试，具备良好的英语读写能力</li>
+          <li>掌握 Python 基础编程，具备基础数据处理能力</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">03</div>
+      <div class="title-col">
+        <div class="label">Experience</div>
+        <h2>实践经历</h2>
+      </div>
+    </div>
+    <div class="exp-list">
+      <div class="exp-card reveal">
+        <div class="exp-left">
+          <div class="company">杭州宏勋机械制造公司</div>
+          <div class="role">会计助理</div>
+          <div class="dates">2023.01 — 2023.02</div>
+        </div>
+        <ul class="exp-detail">
+          <li>整理、粘贴报销单据、发票、收据、差旅费票据，分类归档</li>
+          <li>登记现金、银行存款日记账，核对流水，做好台账</li>
+          <li>录入记账凭证，协助会计做账，核对往来账目</li>
+          <li>核对每日收支，整理原始凭证、保管财务资料</li>
+        </ul>
+      </div>
+      <div class="exp-card reveal reveal-delay-1">
+        <div class="exp-left">
+          <div class="company">研究项目</div>
+          <div class="role">直播带货情境下主播法律责任认定研究</div>
+          <div class="dates">2023.01 — 2023.06</div>
+        </div>
+        <ul class="exp-detail">
+          <li>围绕直播带货行业常见法律纠纷，梳理主播在不同场景下的法律责任认定依据</li>
+          <li>结合民法典、电子商务法等相关法规开展案例分析</li>
+          <li>参与调研行业典型案例，整理分析司法裁判观点</li>
+          <li>形成主播法律责任认定的初步研究报告</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills" class="dark-zone">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">04</div>
+      <div class="title-col">
+        <div class="label">Skills</div>
+        <h2>能力象限</h2>
+      </div>
+    </div>
+    <div class="skills-rack">
+      <div class="skill-mini reveal">
+        <div class="s-icon">&#128188;</div>
+        <div class="s-name">办公软件</div>
+        <div class="s-tags">
+          <span class="s-tag">Word</span>
+          <span class="s-tag">Excel</span>
+          <span class="s-tag">PPT</span>
+        </div>
+      </div>
+      <div class="skill-mini reveal reveal-delay-1">
+        <div class="s-icon">&#128221;</div>
+        <div class="s-name">法律实务</div>
+        <div class="s-tags">
+          <span class="s-tag">案件对接</span>
+          <span class="s-tag">文书草拟</span>
+          <span class="s-tag">卷宗管理</span>
+        </div>
+      </div>
+      <div class="skill-mini reveal reveal-delay-2">
+        <div class="s-icon">&#128178;</div>
+        <div class="s-name">财务会计</div>
+        <div class="s-tags">
+          <span class="s-tag">账务处理</span>
+          <span class="s-tag">税务辅助</span>
+          <span class="s-tag">资料管理</span>
+        </div>
+      </div>
+      <div class="skill-mini reveal reveal-delay-3">
+        <div class="s-icon">&#128187;</div>
+        <div class="s-name">技术工具</div>
+        <div class="s-tags">
+          <span class="s-tag">Python</span>
+          <span class="s-tag">CET-4/6</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MUSICAL THEATER ── -->
+<section id="theater">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">05</div>
+      <div class="title-col">
+        <div class="label">Passion</div>
+        <h2>音乐剧之光</h2>
+      </div>
+    </div>
+    <div class="showcase-marquee">
+      <div class="marquee-track">
+        <span class="show-chip active"><span class="star">&#9733;</span> The Phantom of the Opera</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Les Miserables</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Hamilton</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Notre-Dame de Paris</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Mozart, l'Opera Rock</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Cats</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Romeo & Juliette</span>
+        <span class="show-chip"><span class="star">&#9733;</span> The Phantom of the Opera</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Les Miserables</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Hamilton</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Notre-Dame de Paris</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Mozart, l'Opera Rock</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Cats</span>
+        <span class="show-chip"><span class="star">&#9733;</span> Romeo & Juliette</span>
+      </div>
+    </div>
+    <div class="theater-grid">
+      <div class="theater-card reveal">
+        <div class="tc-bg">&#127917;</div>
+        <div class="tc-icon">&#127917;</div>
+        <div class="tc-quote">"Say you love me every waking moment."</div>
+        <div class="tc-title">The Phantom of the Opera</div>
+        <div class="tc-desc">地下迷宫的魅影、水晶灯坠落的瞬间、永不停歇的音乐盒——这部作品定义了音乐剧的极致浪漫与哥特美学。</div>
+      </div>
+      <div class="theater-card reveal reveal-delay-1">
+        <div class="tc-bg">&#127932;</div>
+        <div class="tc-icon">&#128263;</div>
+        <div class="tc-quote">"Do you hear the people sing?"</div>
+        <div class="tc-title">Les Miserables</div>
+        <div class="tc-desc">苦难、救赎、革命与爱的史诗。每一首歌都是一次灵魂的呐喊，每一次幕落都在拷问人性本身。</div>
+      </div>
+      <div class="theater-card reveal reveal-delay-2">
+        <div class="tc-bg">&#9733;</div>
+        <div class="tc-icon">&#127775;</div>
+        <div class="tc-quote">"I am not throwing away my shot."</div>
+        <div class="tc-title">Hamilton</div>
+        <div class="tc-desc">用嘻哈讲述国父的故事，颠覆性的叙事方式让历史燃烧。每一个韵脚都是一颗子弹，瞄准时代的靶心。</div>
+      </div>
+      <div class="theater-card reveal reveal-delay-3">
+        <div class="tc-bg">&#127983;</div>
+        <div class="tc-icon">&#127983;</div>
+        <div class="tc-quote">"Belle, c'est un mot qu'on dirait invente pour elle."</div>
+        <div class="tc-title">Notre-Dame de Paris</div>
+        <div class="tc-desc">巴黎圣母院的钟声里，卡西莫多、艾丝美拉达与弗罗洛的命运交织成一曲关于美与丑陋的辩证诗。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STRENGTHS ── -->
+<section id="strengths" class="dark-zone">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">06</div>
+      <div class="title-col">
+        <div class="label">Strengths</div>
+        <h2>自我特质</h2>
+      </div>
+    </div>
+    <div class="strength-duo">
+      <div class="strength-article reveal">
+        <div class="sa-icon">&#9878;</div>
+        <div class="sa-title">法律与财务双重视角</div>
+        <div class="sa-body">深耕法律与财务交叉领域。既精通法律案件对接、文书草拟、卷宗管理等律师助理核心工作，又熟练掌握企业账务处理、税务辅助、财务资料管理等实操技能，实现双向融合。</div>
+      </div>
+      <div class="strength-article reveal reveal-delay-1">
+        <div class="sa-icon">&#9733;</div>
+        <div class="sa-title">严谨与热情并存</div>
+        <div class="sa-body">以法务会计的专业训练打磨逻辑的锋利，以音乐剧的审美滋养感知的敏锐。在数据与法条之间不失控，在旋律与叙事之中不设限。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact" class="contact-finale">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">07</div>
+      <div class="title-col">
+        <div class="label">Contact</div>
+        <h2>幕落之前</h2>
+      </div>
+    </div>
+    <div class="cta-spread reveal">
+      <p class="cta-quote">Curtain call<br>is just the <span class="gold">beginning</span>.</p>
+      <div class="cta-links">
+        <a href="mailto:33083498010@qq.com"><span class="arrow">&rarr;</span> 33083498010@qq.com</a>
+        <a href="tel:15158817743"><span class="arrow">&rarr;</span> 15158817743</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 黄梦琳 Huang Menglin. Curtain never falls.</p>
+</footer>
+
+<script>
+  // Curtain reveal
+  var curtain = document.getElementById('curtain');
+  setTimeout(function() { curtain.classList.add('open'); }, 400);
+  setTimeout(function() { curtain.style.display = 'none'; }, 1700);
+
+  // Nav scroll
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Reveal on scroll
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+  // Sparkle cursor effect
+  document.addEventListener('mousemove', function(e) {
+    var sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+    sparkle.style.left = e.clientX + 'px';
+    sparkle.style.top = e.clientY + 'px';
+    document.body.appendChild(sparkle);
+    setTimeout(function() { sparkle.remove(); }, 700);
+  });
+
+  // Parallax spotlight
+  var spotlight = document.querySelector('.spotlight-bg');
+  if (spotlight) {
+    document.addEventListener('mousemove', function(e) {
+      var x = (e.clientX / window.innerWidth) * 100;
+      var y = (e.clientY / window.innerHeight) * 100;
+      spotlight.style.background = 'radial-gradient(ellipse at ' + x + '% ' + y + '%, var(--spotlight) 0%, transparent 60%)';
+    });
+  }
+</script>
+</body>
+</html>
